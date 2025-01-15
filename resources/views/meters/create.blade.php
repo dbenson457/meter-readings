@@ -1,0 +1,74 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+        <h1 class="text-2xl font-bold mb-4">Add New Meter</h1>
+    </div>
+
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <form action="{{ route('meters.store') }}" method="POST">
+            @csrf
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="mpxn">
+                    MPXN
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('mpxn') border-red-500 @enderror"
+                       type="text" 
+                       name="mpxn" 
+                       id="mpxn" 
+                       value="{{ old('mpxn') }}" 
+                       required>
+                @error('mpxn')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="type">
+                    Type
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('type') border-red-500 @enderror"
+                        name="type" 
+                        id="type" 
+                        required>
+                    <option value="">Select Type</option>
+                    <option value="electricity" {{ old('type') == 'electricity' ? 'selected' : '' }}>
+                        Electricity
+                    </option>
+                    <option value="gas" {{ old('type') == 'gas' ? 'selected' : '' }}>
+                        Gas
+                    </option>
+                </select>
+                @error('type')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="installation_date">
+                    Installation Date
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('installation_date') border-red-500 @enderror"
+                       type="date" 
+                       name="installation_date" 
+                       id="installation_date" 
+                       value="{{ old('installation_date') }}" 
+                       required>
+                @error('installation_date')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                        type="submit">
+                    Add Meter
+                </button>
+                <a href="{{ route('meters.index') }}" 
+                   class="text-blue-500 hover:text-blue-700">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+@endsection

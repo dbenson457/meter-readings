@@ -5,8 +5,8 @@
         <h1 class="text-2xl font-bold mb-4">Add New Meter</h1>
     </div>
 
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <form action="{{ route('meters.store') }}" method="POST">
+    <div class="bg-white shadow-md rounded-lg p-8 mb-4">
+        <form action="{{ route('meters.store') }}" method="POST" id="meterForm">
             @csrf
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="mpxn">
@@ -21,6 +21,7 @@
                 @error('mpxn')
                     <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
+                <p id="mpxnType" class="text-sm text-gray-500 mt-2"></p>
             </div>
 
             <div class="mb-4">
@@ -71,4 +72,39 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.getElementById('mpxn').addEventListener('input', function() {
+            const mpxn = this.value;
+            const mpxnTypeElement = document.getElementById('mpxnType');
+            const typeSelect = document.getElementById('type');
+            if (/^S\d{21}$/.test(mpxn)) {
+                mpxnTypeElement.textContent = 'MPAN (Electricity)';
+                typeSelect.value = 'electricity';
+            } else if (/^\d{6,10}$/.test(mpxn)) {
+                mpxnTypeElement.textContent = 'MPRN (Gas)';
+                typeSelect.value = 'gas';
+            } else {
+                mpxnTypeElement.textContent = '';
+                typeSelect.value = '';
+            }
+        });
+
+        document.getElementById('meterForm').addEventListener('submit', function(event) {
+            const mpxn = document.getElementById('mpxn').value;
+            const type = document.getElementById('type').value;
+            const mpxnTypeElement = document.getElementById('mpxnType');
+            if (/^S\d{21}$/.test(mpxn) && type !== 'electricity') {
+                event.preventDefault();
+                mpxnTypeElement.textContent = 'MPXN is an MPAN (Electricity), please select Electricity as the type';
+                mpxnTypeElement.classList.add('text-red-500');
+            } else if (/^\d{6,10}$/.test(mpxn) && type !== 'gas') {
+                event.preventDefault();
+                mpxnTypeElement.textContent = 'MPXN is an MPRN (Gas), please select Gas as the type';
+                mpxnTypeElement.classList.add('text-red-500');
+            } else {
+                mpxnTypeElement.classList.remove('text-red-500');
+            }
+        });
+    </script>
 @endsection

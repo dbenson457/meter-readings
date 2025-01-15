@@ -20,4 +20,10 @@ class MeterReadingController extends Controller
         return redirect()->route('meters.show', $meter)
             ->with('success', 'Reading added successfully.');
     }
+
+    public function destroy(Meter $meter, MeterReading $reading)
+    {
+        $reading->delete();
+        return redirect()->route('meters.show', $meter)->with('success', 'Reading deleted successfully.');
+    }
 }

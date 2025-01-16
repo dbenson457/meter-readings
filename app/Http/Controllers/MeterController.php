@@ -34,15 +34,30 @@ class MeterController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'mpxn' => 'required|unique:meters,mpxn|string',
+            'mpxn' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if (!preg_match('/^S\d{21}$/', $value) && !preg_match('/^\d{6,10}$/', $value)) {
+                        $fail('The ' . $attribute . ' must be a valid MPAN (Electricity) or MPRN (Gas).');
+                    }
+                },
+            ],
+            'type' => 'required|string|in:electricity,gas',
             'installation_date' => 'required|date',
-            'type' => 'required|in:electricity,gas',
+            'estimated_annual_consumption' => 'required|integer|between:2000,8000',
         ]);
+
+        // Ensure the type matches the MPXN format
+        if ((preg_match('/^S\d{21}$/', $validated['mpxn']) && $validated['type'] !== 'electricity') ||
+            (preg_match('/^\d{6,10}$/', $validated['mpxn']) && $validated['type'] !== 'gas')) {
+            return back()->withErrors(['mpxn' => 'The MPXN does not match the selected type.'])->withInput();
+        }
 
         Meter::create($validated);
 
-        return redirect()->route('meters.index')
-            ->with('success', 'Meter created successfully.');
+        return redirect()->route('meters.index')->with('success', 'Meter created successfully.');
     }
 
     public function show(Meter $meter)

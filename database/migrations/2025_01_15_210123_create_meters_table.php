@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('mpxn')->unique();
             $table->date('installation_date');
             $table->enum('type', ['electricity', 'gas']);
+            $table->integer('estimated_annual_consumption');
             $table->timestamps();
         });
     }

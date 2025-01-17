@@ -7,6 +7,9 @@ Route::get('/', function () {
     return redirect()->route('meters.index');
 });
 
+Route::get('/meters/bulk-upload', [MeterReadingController::class, 'showBulkUploadForm'])->name('meters.bulkUploadForm');
+Route::post('/meters/bulk-upload', [MeterReadingController::class, 'bulkUpload'])->name('meters.bulkUpload');
+// Route::get('/delete-invalid-lines/{filename}', [MeterReadingController::class, 'deleteInvalidLines'])->name('deleteInvalidLines');
 Route::get('/meters', [MeterController::class, 'index'])->name('meters.index');
 Route::get('/meters/create', [MeterController::class, 'create'])->name('meters.create');
 Route::post('/meters', [MeterController::class, 'store'])->name('meters.store');

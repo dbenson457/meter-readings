@@ -27,15 +27,18 @@
     <nav class="gradient-bg text-white shadow-lg">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
+            <a href="{{ route('meters.index') }}">
                 <div class="flex items-center">
                     <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                     <span class="ml-3 text-xl font-bold">Meter Manager</span>
                 </div>
+            </a>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('meters.index') }}" class="hover:text-gray-200">Dashboard</a>
+                    
                     <a href="{{ route('meters.create') }}" class="bg-white text-blue-900 px-4 py-2 rounded-lg hover:bg-gray-100 transition duration-300">Add Meter</a>
+                    <a href="{{ route('meters.bulkUploadForm') }}" class="bg-white text-blue-900 px-4 py-2 rounded-lg hover:bg-gray-100 transition duration-300">Bulk Upload Readings</a>
                 </div>
             </div>
         </div>

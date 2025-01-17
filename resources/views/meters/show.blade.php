@@ -168,7 +168,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $reading->created_at->diffForHumans() }}
+                                {{ \Carbon\Carbon::parse($reading->created_at)->format('d-m-Y') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <form action="{{ route('meter.readings.destroy', [$meter, $reading]) }}" method="POST"
